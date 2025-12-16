@@ -1,37 +1,36 @@
-Autonomous Insurance Claims Processing Agent 
+Autonomous Insurance Claims Processing Agent
 Overview
+This project implements an autonomous insurance claims processing agent designed to handle FNOL (First Notice of Loss) documents. The agent extracts structured claim information from unstructured FNOL text, validates mandatory fields, and routes claims to the appropriate workflow using clearly defined business rules.
 
-This project implements a lightweight autonomous agent to process FNOL (First Notice of Loss) documents.
-The agent extracts key claim-related fields from FNOL text, validates the presence of mandatory information, and routes the claim to the appropriate workflow based on predefined business rules.
+The solution focuses on explainability, simplicity, and reliability, making it suitable for early-stage claim triage and operational automation.
 
-The focus of this solution is clarity, explainability, and simplicity rather than complex machine learning models.
+Key Capabilities
+Automated extraction of policy, incident, and asset details from FNOL documents
 
-Features
+Validation of mandatory claim fields with identification of missing information
 
-Rule-based extraction of structured data from FNOL text documents
+Rule-based claim classification and workflow routing
 
-Validation of mandatory fields with clear identification of missing information
-
-Claim classification and workflow routing using business rules
-
-Basic fraud detection using keyword matching in the incident description
+Fraud risk detection using keyword analysis
 
 Structured JSON output for system integration
 
 Human-readable decision summary for claim reviewers
 
-Uses only Python standard libraries (no external dependencies)
+Built entirely using Python standard libraries
 
-Claim Routing Logic
-Condition	Route	Priority
-Missing mandatory fields	Manual Review	1 (Highest)
-Fraud indicators detected	Investigation Flag	2
-Injury-related claim	Specialist Queue	3
-Estimated damage < ₹25,000	Fast-track	4
-Estimated damage ≥ ₹25,000	Standard Review	5 (Default)
-Fraud Keywords Checked
+Claim Routing Strategy
+| Condition                  | Workflow Route     | Priority |
+| -------------------------- | ------------------ | -------- |
+| Missing mandatory fields   | Manual Review      | Highest  |
+| Fraud indicators detected  | Investigation Flag | High     |
+| Injury-related claim       | Specialist Queue   | Medium   |
+| Estimated damage < ₹25,000 | Fast-track         | Low      |
+| Estimated damage ≥ ₹25,000 | Standard Review    | Default  |
 
-The agent scans the claim description for the following keywords:
+
+Fraud Detection Logic
+The agent scans the incident description for common fraud-related terms. If any of the following keywords are detected, the claim is flagged for investigation:
 
 fraud
 
@@ -45,11 +44,8 @@ fabricated
 
 false claim
 
-If any of these are detected, the claim is flagged for investigation.
-
 Fields Extracted
 Policy Information
-
 Policy Number
 
 Policyholder Name
@@ -57,7 +53,6 @@ Policyholder Name
 Effective Dates
 
 Incident Information
-
 Incident Date
 
 Incident Time
@@ -67,13 +62,11 @@ Location
 Description
 
 Involved Parties
-
 Claimant
 
 Contact Details
 
 Asset Details
-
 Asset Type
 
 Asset ID
@@ -81,61 +74,69 @@ Asset ID
 Estimated Damage
 
 Claim Information
-
 Claim Type
 
 Attachments
 
 Initial Estimate
 
-Tech Stack
-
+Technology Stack
 Language: Python 3.8+
 
-Dependencies: None (pure Python)
+Dependencies: None (pure Python implementation)
 
-Pattern Matching: Regular Expressions (re module)
+Text Processing: Regular Expressions (re)
 
 Output Format: JSON
 
 Project Structure
+graphql
+Copy code
 autonomous-fnol-claims-agent/
 │
-├── fnol_agent.py        # Main FNOL processing agent
+├── fnol_agent.py        # Core FNOL processing agent
 ├── README.md            # Project documentation
 ├── sample_fnol.txt      # Sample FNOL input document
 ├── requirements.txt     # Python version requirement
 └── test_cases.py        # Optional test cases
-
-Installation
+Setup and Execution
 Prerequisites
-
 Python 3.8 or higher
 
-Setup
-
+Installation
 No external libraries are required.
 
+bash
+Copy code
 git clone <repository-url>
 cd autonomous-fnol-claims-agent
-
-How to Run
+Run the Agent
+bash
+Copy code
 python fnol_agent.py
+The agent performs the following steps:
 
+Parses the FNOL document
 
-The agent will:
+Extracts relevant claim fields
 
-Parse the FNOL document
+Validates mandatory information
 
-Extract relevant fields
+Applies routing rules
 
-Validate mandatory information
+Generates structured output and a decision summary
 
-Apply routing rules
+Design Considerations
+This agent is intentionally implemented using deterministic, rule-based logic to ensure transparency, auditability, and ease of maintenance. Such an approach aligns with real-world insurance workflows where explainable decisions are critical during initial claim assessment.
 
-Output structured JSON and a readable summary
+Future Enhancements
+PDF FNOL document parsing
 
-Design Notes
+OCR support for scanned claim forms
 
-This solution intentionally uses rule-based logic to keep the decision-making transparent and easy to audit.
-Such an approach is commonly used in early-stage claim triage systems, where explainability and reliability are more important than model complexity.
+ML-based risk scoring and anomaly detection
+
+REST API integration for enterprise systems
+
+Author
+Anurag Dhawade
